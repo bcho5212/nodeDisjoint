@@ -31,7 +31,7 @@ def generate_data_frame(drivers, driver_index):
     return df
 
 
-def send_routes_to_csv(path_mapper: PathMapping, file_name):
+def send_routes_to_csv(path_mapper, file_name):
     drivers = path_mapper.driver_dict
     file_check = Path(file_name)
     for driver_index in drivers:
@@ -46,5 +46,4 @@ def send_routes_to_csv(path_mapper: PathMapping, file_name):
 if __name__ == "__main__":
     output_file_name = output_path + str(datetime.date.today()) + "_Driver_Routes"
     routes = prepare_routes()
-    # file_dict = generate_file_dict(routes)
     send_routes_to_csv(routes, output_file_name)
