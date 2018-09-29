@@ -7,6 +7,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 if os.getenv("BUCKET_PATH") is None:
     # bucket_path = "/Users/bcho/IdeaProjects/nodeDisjoint/test/fixtures/"
     bucket_path = ROOT_DIR.replace("mapping", "") + "test/fixtures/"
+    output_path = ROOT_DIR.replace("mapping", "") + "test/output/"
 else:
     bucket_path = os.getenv("BUCKET_PATH")
 
