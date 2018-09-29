@@ -9,6 +9,7 @@ else:
     bucket_path = os.getenv("BUCKET_PATH")
 
 
+# Get the file extension to know which pandas function to use
 def get_file_extension(file_path):
     file_split = os.path.splitext(file_path)
     file_extension = file_split[1]

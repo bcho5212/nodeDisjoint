@@ -7,12 +7,14 @@ from mapping.path_mapping import PathMapping
 from mapping.read_file import output_path
 
 
+# Process the input file and generate the routes for each driver
 def prepare_routes(number_of_drivers, input_file_path):
     path_mapper = PathMapping(input_file_path)
     path_mapper.execute_path_mapping(number_of_drivers=number_of_drivers)
     return path_mapper
 
 
+# Create the data frame that will feed into the output csv file
 def generate_data_frame(drivers, driver_index):
     driver_kiosk_ids = drivers[driver_index].kiosk_ids
     driver_route = drivers[driver_index].route
@@ -34,6 +36,7 @@ def generate_data_frame(drivers, driver_index):
     return df
 
 
+# Send the data frame(s) to the output csv file - Creating the file if new and appending if the file exists
 def send_routes_to_csv(path_mapper, file_name):
     drivers = path_mapper.driver_dict
     file_check = Path(file_name)

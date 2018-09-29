@@ -24,6 +24,7 @@ class AddressLibrary:
         self.prepare_data_frame()
         self.load_address_library()
 
+    # Prepare the data frame based on input file
     def prepare_data_frame(self):
         file_extension = read_file.get_file_extension(self.input_file_path)
         if file_extension == ".csv":
@@ -34,6 +35,7 @@ class AddressLibrary:
             return False
         self.address_dict = self.file_df.to_dict(orient="index")
 
+    # Load the address library, adding kiosk_id's ad tagged flags to each row
     def load_address_library(self):
         n = 0
         for row in self.address_dict:
