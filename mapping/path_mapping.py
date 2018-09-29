@@ -1,4 +1,3 @@
-import logging
 import operator
 
 import geopy.distance
@@ -6,41 +5,18 @@ import geopy.distance
 from mapping.address_library import AddressLibrary
 from mapping.driver import Driver
 
-phone_number_library = [
-    '111-111-1111',
-    '222-222-2222',
-    '333-333-3333',
-    '555-555-5555',
-]
-
 
 class PathMapping:
-    def __init__(self):
+    def __init__(self, input_file_path):
         self.driver_dict = dict()
         self.starting_coords = ("41.8851024", "-87.6618988")
-        self.coordinates_library = AddressLibrary("Kiosk Coords")
+        self.coordinates_library = AddressLibrary(input_file_path)
         self.address_library = self.coordinates_library.address_dict
         self.calculate_starting_distance()
 
-    def initiate_drivers(self, number_of_drivers, phone_number_library):
-        if number_of_drivers == len(phone_number_library):
-            for n in range(number_of_drivers):
-                self.driver_dict[n] = Driver(n, phone_number_library[n])
-        elif number_of_drivers <= len(phone_number_library):
-            logging.warning(
-                "Some expected drivers may not have been initiated - number_of_drivers: {0}, phone_number_library: {1}"
-                    .format(number_of_drivers, len(phone_number_library))
-            )
-            for n in range(number_of_drivers):
-                self.driver_dict[n] = Driver(n, phone_number_library[n])
-        else:
-            logging.warning(
-                "More drivers are trying to be initiated without corresponding phones numbers"
-                " - number_of_drivers: {0}, phone_number_library: {1}"
-                    .format(number_of_drivers, len(phone_number_library))
-            )
-            for n in range(len(phone_number_library)):
-                self.driver_dict[n] = Driver(n, phone_number_library[n])
+    def initiate_drivers(self, number_of_drivers):
+        for n in range(number_of_drivers):
+            self.driver_dict[n] = Driver(n)
 
     def calculate_starting_distance(self):
         keys_library = self.generate_keys_library()
@@ -129,7 +105,7 @@ class PathMapping:
             return True
 
     def execute_path_mapping(self, number_of_drivers):
-        self.initiate_drivers(number_of_drivers, phone_number_library)
+        self.initiate_drivers(number_of_drivers)
         self.set_driver_start_point()
         stop_number = 1
         while not self.check_if_complete():
@@ -139,28 +115,3 @@ class PathMapping:
             for stop_number in self.driver_dict[driver_index].kiosk_ids:
                 key = self.driver_dict[driver_index].kiosk_ids[stop_number]
                 self.populate_driver_route(driver_index, key)
-        for driver_index in self.driver_dict:
-            print(vars(self.driver_dict[driver_index]))
-        for driver_index in self.driver_dict:
-            print(len(self.driver_dict[driver_index].kiosk_ids), len(self.driver_dict[driver_index].route))
-        for driver_index in self.driver_dict:
-            for stop_number in self.driver_dict[driver_index].kiosk_ids:
-                print(
-                    driver_index,
-                    stop_number,
-                    "Name: {0} - Address: {1} - Lat/Long: {2}, {3}".format(
-                        self.driver_dict[driver_index].route[
-                            self.driver_dict[driver_index].kiosk_ids[stop_number]]["name"],
-                        self.driver_dict[driver_index].route[
-                            self.driver_dict[driver_index].kiosk_ids[stop_number]]["address (S)"],
-                        self.driver_dict[driver_index].route[
-                            self.driver_dict[driver_index].kiosk_ids[stop_number]]["latitude (N)"],
-                        self.driver_dict[driver_index].route[
-                            self.driver_dict[driver_index].kiosk_ids[stop_number]]["longitude (N)"],
-                    )
-                )
-
-
-if __name__ == "__main__":
-    path_mapper = PathMapping()
-    path_mapper.execute_path_mapping(2)
