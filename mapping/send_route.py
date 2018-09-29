@@ -1,9 +1,10 @@
-import pandas
 import datetime
+from pathlib import Path
+
+import pandas
 
 from mapping.path_mapping import PathMapping
 from mapping.read_file import output_path
-from pathlib import Path
 
 
 def prepare_routes():

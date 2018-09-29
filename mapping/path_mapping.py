@@ -1,6 +1,7 @@
-import geopy.distance
-import operator
 import logging
+import operator
+
+import geopy.distance
 
 from mapping.address_library import AddressLibrary
 from mapping.driver import Driver
@@ -28,7 +29,7 @@ class PathMapping:
         elif number_of_drivers <= len(phone_number_library):
             logging.warning(
                 "Some expected drivers may not have been initiated - number_of_drivers: {0}, phone_number_library: {1}"
-                .format(number_of_drivers, len(phone_number_library))
+                    .format(number_of_drivers, len(phone_number_library))
             )
             for n in range(number_of_drivers):
                 self.driver_dict[n] = Driver(n, phone_number_library[n])
@@ -36,7 +37,7 @@ class PathMapping:
             logging.warning(
                 "More drivers are trying to be initiated without corresponding phones numbers"
                 " - number_of_drivers: {0}, phone_number_library: {1}"
-                .format(number_of_drivers, len(phone_number_library))
+                    .format(number_of_drivers, len(phone_number_library))
             )
             for n in range(len(phone_number_library)):
                 self.driver_dict[n] = Driver(n, phone_number_library[n])
@@ -76,7 +77,7 @@ class PathMapping:
     def set_driver_next_point(self, stop_number):
         list_of_distances = {}
         for driver_index in self.driver_dict:
-            previous_stop_number = stop_number-1
+            previous_stop_number = stop_number - 1
             previous_kiosk_id = self.driver_dict[driver_index].kiosk_ids[previous_stop_number]
             previous_coords = self.find_previous_coords(previous_kiosk_id)
             self.calculate_distance_to_next(previous_coords)

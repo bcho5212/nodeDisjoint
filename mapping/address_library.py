@@ -15,6 +15,7 @@ invalid_kiosks = (
     "Moraine Valley Community College: Police Academy- Building B",
 )
 
+
 class AddressLibrary:
     def __init__(self, search_string=str()):
         self.search_string = search_string

@@ -1,6 +1,5 @@
-import os
 import glob
-
+import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 # BUCKET_PATH would be an environment variable that is used to specify where the kiosk file would be dropped
