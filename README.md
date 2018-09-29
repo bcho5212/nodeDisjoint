@@ -18,6 +18,19 @@ kiosks for a specified number of drivers starting from the starting coordinates 
         - "./nodeDisjoint/test/output/..."
 
 - Additional notes:
+    - Processing Steps:
+        1) Takes user input file and generates a data frame
+        2) Adds some additional elements to each row in the data frame for later use:
+            kiosk_id
+            tagged
+        3) Generates a dictionary of Driver objects to add stops and routes to
+        4) Starts by calculating the shortest distance to the start point for all kiosks and sets that as the starting
+        point
+        5) Loops through the rest of the kiosks, using the previous kiosk's coordinates and calculates the shortest
+        distance
+        6) Tags kiosks as "tagged = True" after each loop to prevent drivers from visiting the same kiosk multiple times
+        7) Populates the Driver objects with their respective routes
+        8) Outputs the route to a csv file
     - There were some kiosks tied to duplicated coordinates:
         name
         Chicago Midway Airport - Ticketing Employee Lounge
