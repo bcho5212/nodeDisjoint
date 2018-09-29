@@ -1,4 +1,3 @@
-import glob
 import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -10,18 +9,8 @@ else:
     bucket_path = os.getenv("BUCKET_PATH")
 
 
+# Get the file extension to know which pandas function to use
 def get_file_extension(file_path):
     file_split = os.path.splitext(file_path)
     file_extension = file_split[1]
     return file_extension
-
-
-def get_file_path(search_string):
-    file_list = glob.glob(os.path.join(bucket_path, search_string + "*"))
-    file_path = max(file_list, key=os.path.getctime)
-    return file_path
-
-
-if __name__ == "__main__":
-    file_path = get_file_path("Kiosk Coords")
-    file_extension = get_file_extension(file_path)

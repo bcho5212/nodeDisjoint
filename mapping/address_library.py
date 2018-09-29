@@ -17,33 +17,28 @@ invalid_kiosks = (
 
 
 class AddressLibrary:
-    def __init__(self, search_string=str()):
-        self.search_string = search_string
+    def __init__(self, input_file_path):
         self.file_df = pandas.DataFrame
+        self.input_file_path = input_file_path
         self.address_dict = dict()
         self.prepare_data_frame()
         self.load_address_library()
 
+    # Prepare the data frame based on input file
     def prepare_data_frame(self):
-        file_path = read_file.get_file_path(self.search_string)
-        file_extension = read_file.get_file_extension(file_path)
+        file_extension = read_file.get_file_extension(self.input_file_path)
         if file_extension == ".csv":
-            self.file_df = pandas.read_csv(file_path)
+            self.file_df = pandas.read_csv(self.input_file_path)
         elif file_extension == ".xlsx":
-            self.file_df = pandas.read_excel(file_path)
+            self.file_df = pandas.read_excel(self.input_file_path)
         else:
             return False
         self.address_dict = self.file_df.to_dict(orient="index")
 
+    # Load the address library, adding kiosk_id's ad tagged flags to each row
     def load_address_library(self):
         n = 0
         for row in self.address_dict:
             self.address_dict[row]["kiosk_id"] = n
             self.address_dict[row]["tagged"] = False
             n += 1
-
-
-if __name__ == "__main__":
-    # prepare_address_library("/Users/bcho/IdeaProjects/nodeDisjoint/test/fixtures/Kiosk Coords.csv")
-    address_library = AddressLibrary("Kiosk Coords")
-    print(address_library.address_dict)

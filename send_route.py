@@ -7,12 +7,14 @@ from mapping.path_mapping import PathMapping
 from mapping.read_file import output_path
 
 
-def prepare_routes():
-    path_mapper = PathMapping()
-    path_mapper.execute_path_mapping(number_of_drivers=2)
+# Process the input file and generate the routes for each driver
+def prepare_routes(number_of_drivers, input_file_path):
+    path_mapper = PathMapping(input_file_path)
+    path_mapper.execute_path_mapping(number_of_drivers=number_of_drivers)
     return path_mapper
 
 
+# Create the data frame that will feed into the output csv file
 def generate_data_frame(drivers, driver_index):
     driver_kiosk_ids = drivers[driver_index].kiosk_ids
     driver_route = drivers[driver_index].route
@@ -23,7 +25,9 @@ def generate_data_frame(drivers, driver_index):
             "driver_index": driver_index,
             "stop_number": stop_number,
             "name": driver_route[kiosk_id]["name"],
-            "address": driver_route[kiosk_id]["address (S)"]
+            "address": driver_route[kiosk_id]["address (S)"],
+            "latitude (N)": driver_route[kiosk_id]["latitude (N)"],
+            "longitude (N)": driver_route[kiosk_id]["longitude (N)"]
         }
     df = pandas.DataFrame.from_dict(
         data=file_dict,
@@ -32,6 +36,7 @@ def generate_data_frame(drivers, driver_index):
     return df
 
 
+# Send the data frame(s) to the output csv file - Creating the file if new and appending if the file exists
 def send_routes_to_csv(path_mapper, file_name):
     drivers = path_mapper.driver_dict
     file_check = Path(file_name)
@@ -46,5 +51,8 @@ def send_routes_to_csv(path_mapper, file_name):
 
 if __name__ == "__main__":
     output_file_name = output_path + str(datetime.date.today()) + "_Driver_Routes.csv"
-    routes = prepare_routes()
+    input_file_path = input("Path to file: ")
+    number_of_drivers = input("Number of drivers: ")
+    routes = prepare_routes(int(number_of_drivers), input_file_path)
     send_routes_to_csv(routes, output_file_name)
+    print("File with routes has been created at: {0}".format(output_file_name))
