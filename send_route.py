@@ -45,6 +45,6 @@ def send_routes_to_csv(path_mapper, file_name):
 
 
 if __name__ == "__main__":
-    output_file_name = output_path + str(datetime.date.today()) + "_Driver_Routes"
+    output_file_name = output_path + str(datetime.date.today()) + "_Driver_Routes.csv"
     routes = prepare_routes()
     send_routes_to_csv(routes, output_file_name)
